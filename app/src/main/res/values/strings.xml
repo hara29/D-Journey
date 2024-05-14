@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="message_main_page">Selamat datang!</string>
+    <string name="title_welcome_page">Selamat datang di d\'Story!</string>
+    <string name="message_welcome_page">Mari temukan cerita inspiratif dari belajar dan mengembangkan skill bersama komunitas Dicoding di d\'Story</string>
+    <string name="login">Masuk</string>
+    <string name="signup">Daftar</string>
+    <string name="title_login_page">Masuk dan Jelajahi Kisah Inspiratif!</string>
+    <string name="message_login_page">Temukan cerita-cerita inspiratif dari komunitas Dicoding. Silakan masuk untuk melihat lebih banyak!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="name">Nama</string>
+    <string name="logout">Logout</string>
+</resources>

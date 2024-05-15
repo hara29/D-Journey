@@ -12,4 +12,6 @@
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
     <string name="name">Nama</string>
     <string name="logout">Logout</string>
+    <string name="signup_failed_message">Gagal Sign Up</string>
+    <string name="signup_success_message">Sign Up berhasil, silahkan login!</string>
 </resources>

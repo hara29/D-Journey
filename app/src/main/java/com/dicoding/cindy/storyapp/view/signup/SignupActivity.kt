@@ -1,20 +1,28 @@
 package com.dicoding.cindy.storyapp.view.signup
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.databinding.ActivitySignupBinding
+import com.dicoding.cindy.storyapp.view.ViewModelFactory
+import com.dicoding.cindy.storyapp.data.Result
+import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.view.login.LoginActivity
+
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
 
+    private val viewModel by viewModels<SignupViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignupBinding.inflate(layoutInflater)
@@ -40,16 +48,39 @@ class SignupActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.signupButton.setOnClickListener {
             val email = binding.edRegisterEmail.text.toString()
+            val name = binding.edRegisterName.text.toString()
+            val password = binding.edRegisterPassword.text.toString()
 
-            AlertDialog.Builder(this).apply {
-                setTitle("Yeah!")
-                setMessage("Akun dengan $email sudah jadi nih. Yuk, login dan belajar coding.")
-                setPositiveButton("Lanjut") { _, _ ->
-                    finish()
+            viewModel.signUpUser(name, email, password).observe(this) {
+                if (it != null) {
+                    when(it) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Success -> {
+                            showLoading(false)
+                            if (it.data.error) {
+                                showToast(getString(R.string.signup_failed_message))
+                            } else {
+                                showToast(getString(R.string.signup_success_message))
+                                val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
+                        is Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this, it.error, Toast.LENGTH_LONG).show()
+                        }
+
+                    }
                 }
-                create()
-                show()
             }
         }
+    }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

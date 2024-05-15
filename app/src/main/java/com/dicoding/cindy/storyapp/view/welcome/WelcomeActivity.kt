@@ -5,11 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.databinding.ActivityWelcomeBinding
 import com.dicoding.cindy.storyapp.view.login.LoginActivity
 import com.dicoding.cindy.storyapp.view.signup.SignupActivity

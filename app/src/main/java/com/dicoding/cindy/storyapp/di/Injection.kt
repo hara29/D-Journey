@@ -2,8 +2,8 @@ package com.dicoding.cindy.storyapp.di
 
 import android.content.Context
 import com.dicoding.cindy.storyapp.data.StoryRepository
-import com.dicoding.cindy.storyapp.data.pref.UserPreference
-import com.dicoding.cindy.storyapp.data.pref.dataStore
+import com.dicoding.cindy.storyapp.data.UserPreference
+import com.dicoding.cindy.storyapp.data.dataStore
 import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first

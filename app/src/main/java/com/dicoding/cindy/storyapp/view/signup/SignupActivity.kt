@@ -3,6 +3,7 @@ package com.dicoding.cindy.storyapp.view.signup
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -13,7 +14,6 @@ import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.databinding.ActivitySignupBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.data.Result
-import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
 import com.dicoding.cindy.storyapp.view.login.LoginActivity
 
 
@@ -46,36 +46,40 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.signupButton.setOnClickListener {
-            val email = binding.edRegisterEmail.text.toString()
-            val name = binding.edRegisterName.text.toString()
-            val password = binding.edRegisterPassword.text.toString()
+        with(binding){
+            signupButton.setOnClickListener {
+                val email = edRegisterEmail.text.toString()
+                val name = edRegisterName.text.toString()
+                val password = edRegisterPassword.text.toString()
 
-            viewModel.signUpUser(name, email, password).observe(this) {
-                if (it != null) {
-                    when(it) {
-                        is Result.Loading -> {
-                            showLoading(true)
-                        }
-                        is Result.Success -> {
-                            showLoading(false)
-                            if (it.data.error) {
-                                showToast(getString(R.string.signup_failed_message))
-                            } else {
-                                showToast(getString(R.string.signup_success_message))
-                                val intent = Intent(this@SignupActivity, LoginActivity::class.java)
-                                startActivity(intent)
+                viewModel.signUpUser(name, email, password).observe(this@SignupActivity) {
+                    if (it != null) {
+                        when(it) {
+                            is Result.Loading -> {
+                                showLoading(true)
                             }
-                        }
-                        is Result.Error -> {
-                            showLoading(false)
-                            Toast.makeText(this, it.error, Toast.LENGTH_LONG).show()
-                        }
+                            is Result.Success -> {
+                                showLoading(false)
+                                if (it.data.error) {
+                                    showToast(getString(R.string.signup_failed_message))
+                                } else {
+                                    showToast(getString(R.string.signup_success_message))
+                                    val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                                    startActivity(intent)
+                                }
+                            }
+                            is Result.Error -> {
+                                showLoading(false)
+                                Toast.makeText(this@SignupActivity, it.error, Toast.LENGTH_LONG).show()
+                                Log.d("signup act", it.error)
+                            }
 
+                        }
                     }
                 }
             }
         }
+
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

@@ -5,13 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.cindy.storyapp.data.Result
 import com.dicoding.cindy.storyapp.data.StoryRepository
-import com.dicoding.cindy.storyapp.data.pref.UserModel
 import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
-import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.response.login.LoginResult
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: StoryRepository) : ViewModel() {
-    fun saveSession(user: UserModel) {
+    fun saveSession(user: LoginResult) {
         viewModelScope.launch {
             repository.saveSession(user)
         }

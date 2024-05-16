@@ -3,6 +3,7 @@ package com.dicoding.cindy.storyapp.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Log.d("MainAct", "Menampilkan Halaman Main")
 
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {

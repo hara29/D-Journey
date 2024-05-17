@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.cindy.storyapp.data.StoryRepository
 import com.dicoding.cindy.storyapp.di.Injection
 import com.dicoding.cindy.storyapp.view.login.LoginViewModel
-import com.dicoding.cindy.storyapp.view.main.MainViewModel
+import com.dicoding.cindy.storyapp.view.main.ListStoryViewModel
 import com.dicoding.cindy.storyapp.view.signup.SignupViewModel
 
 class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -14,8 +14,8 @@ class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvi
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(repository) as T
+            modelClass.isAssignableFrom(ListStoryViewModel::class.java) -> {
+                ListStoryViewModel(repository) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T

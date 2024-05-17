@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.data.Result
 import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
-import com.dicoding.cindy.storyapp.data.response.login.LoginResult
 import com.dicoding.cindy.storyapp.databinding.ActivityLoginBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.view.main.MainActivity
@@ -60,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
                         is Result.Success -> {
                             showLoading(false)
                             loginProcess(it.data)
+                            moveActivity()
 //                               if (it.data.error) {
 //                                   showToast(getString(R.string.login_failed_message))
 //                               } else {
@@ -85,9 +85,12 @@ class LoginActivity : AppCompatActivity() {
     private fun loginProcess(data : LoginResponse){
         viewModel.saveSession(data.loginResult)
         showToast(getString(R.string.login_success_message))
+    }
+    private fun moveActivity(){
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+        // finish()
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

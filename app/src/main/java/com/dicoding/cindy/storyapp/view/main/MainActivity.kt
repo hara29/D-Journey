@@ -8,14 +8,17 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
+import com.dicoding.cindy.storyapp.view.main.liststory.ListStoryFragment
 import com.dicoding.cindy.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<ListStoryViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,17 +26,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("MainAct", "Menampilkan Halaman Main")
-
         viewModel.getSession().observe(this) { user ->
+            Log.d("MainAct", "Nama: ${user.name}")
+            Log.d("MainAct", "Token: ${user.token}")
+            Log.d("MainAct", "isLogin: ${user.isLogin}")
             if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
         }
 
+        val fragmentManager = supportFragmentManager
+        val listStoryFragment = ListStoryFragment()
+        val fragment = fragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
+
+        if (fragment !is ListStoryFragment) {
+            Log.d("MyFlexibleFragment", "Fragment Name :" + ListStoryFragment::class.java.simpleName)
+            fragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_container, listStoryFragment, ListStoryFragment::class.java.simpleName)
+                .commit()
+        }
+
         setupView()
         setupAction()
+
     }
 
     private fun setupView() {

@@ -8,6 +8,7 @@ import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
 import com.dicoding.cindy.storyapp.data.response.login.LoginResult
 import com.dicoding.cindy.storyapp.data.retrofit.ApiService
 import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
@@ -56,13 +57,21 @@ class StoryRepository (
             emit(Result.Error(errorMessage ?: "An error occurred"))
             Log.d("login", e.message?: "Tidak bisa login")
         }
-//        emit(Result.Loading)
-//        try {
-//            val response = apiService.userLogin(email, password)
-//            emit(Result.Success(response))
-//        } catch (e: Exception) {
-//            emit(Result.Error(e.message ?: "An error occurred"))
-//        }
+    }
+
+    fun getStories(): LiveData<Result<GetAllStoriesResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getStories()
+            emit(Result.Success(response))
+            Log.d("ListSories",  "List Berhasil ditampilkan")
+        } catch (e: HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+            val errorMessage = errorBody.message
+            emit(Result.Error(errorMessage ?: "An error occurred"))
+            Log.d("ListSories", e.message?: "List Gagal ditampilkan")
+        }
     }
 
     companion object {

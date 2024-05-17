@@ -16,4 +16,7 @@
     <string name="signup_success_message">Sign Up berhasil, silahkan login!</string>
     <string name="login_failed_message">Gagal Login</string>
     <string name="login_success_message">Login Berhasil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_stories">Story Tidak Ditemukan</string>
 </resources>

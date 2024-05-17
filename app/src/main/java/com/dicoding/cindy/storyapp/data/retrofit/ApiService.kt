@@ -2,8 +2,10 @@ package com.dicoding.cindy.storyapp.data.retrofit
 
 import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
 import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiService {
@@ -22,4 +24,6 @@ interface ApiService {
         @Field("password") password: String
     ): LoginResponse
 
+    @GET("stories")
+    suspend fun getStories(): GetAllStoriesResponse
 }

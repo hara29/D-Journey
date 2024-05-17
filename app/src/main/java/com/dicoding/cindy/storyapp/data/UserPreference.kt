@@ -1,6 +1,7 @@
 package com.dicoding.cindy.storyapp.data
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -38,6 +39,7 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     suspend fun logout() {
         dataStore.edit { preferences ->
             preferences.clear()
+            Log.d("Logout", preferences[IS_LOGIN_KEY].toString())
         }
     }
 

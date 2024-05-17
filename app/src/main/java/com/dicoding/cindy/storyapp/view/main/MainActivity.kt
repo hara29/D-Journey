@@ -4,20 +4,36 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.cindy.storyapp.R
+import com.dicoding.cindy.storyapp.data.Result
+import com.dicoding.cindy.storyapp.data.response.login.LoginResult
+import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
-import com.dicoding.cindy.storyapp.view.main.liststory.ListStoryFragment
+import com.dicoding.cindy.storyapp.view.main.detailstory.DetailStoryActivity
 import com.dicoding.cindy.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<ListStoryViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
+    private val adapter = StoryAdapter(object : StoryAdapter.OnItemClickCallback {
+        override fun onItemClicked(story: ListStoryItem) {
+            val moveDataIntent = Intent(this@MainActivity, DetailStoryActivity::class.java)
+            moveDataIntent.putExtra(DetailStoryActivity.EXTRA_STORY, story)
+            startActivity(moveDataIntent)
+        }
+    })
 
     private lateinit var binding: ActivityMainBinding
 
@@ -26,33 +42,42 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        setupView()
+        setupAction()
+        getSession()
+    }
+
+    private fun getSession() {
         viewModel.getSession().observe(this) { user ->
             Log.d("MainAct", "Nama: ${user.name}")
             Log.d("MainAct", "Token: ${user.token}")
             Log.d("MainAct", "isLogin: ${user.isLogin}")
-            if (!user.isLogin) {
+            if (user.isLogin && user.token != null) {
+                getStories()
+            } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             }
         }
-
-        val fragmentManager = supportFragmentManager
-        val listStoryFragment = ListStoryFragment()
-        val fragment = fragmentManager.findFragmentByTag(ListStoryFragment::class.java.simpleName)
-
-        if (fragment !is ListStoryFragment) {
-            Log.d("MyFlexibleFragment", "Fragment Name :" + ListStoryFragment::class.java.simpleName)
-            fragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, listStoryFragment, ListStoryFragment::class.java.simpleName)
-                .commit()
-        }
-
-        setupView()
-        setupAction()
-
     }
 
+    private fun getStories() {
+        viewModel.getStories().observe(this) { result ->
+            when (result) {
+                is Result.Loading -> showLoading(true)
+                is Result.Success -> {
+                    showLoading(false)
+                    setStories(result.data.listStory)
+                }
+                is Result.Error -> {
+                    showLoading(false)
+                    showToast(result.error)
+                    Log.d("List Story", result.error)
+                }
+            }
+        }
+    }
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -67,9 +92,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            // addItemDecoration(DividerItemDecoration(this@MainActivity, (layoutManager as LinearLayoutManager).orientation))
+            setHasFixedSize(true)
+            adapter = adapter
+        }
         binding.logoutButton.setOnClickListener {
             viewModel.logout()
         }
+    }
+
+    private fun setStories(stories: List<ListStoryItem>) {
+        if (stories.isEmpty()) {
+            showToast(getString(R.string.empty_stories))
+        } else {
+            adapter.submitList(stories)
+            binding.recyclerView.adapter = adapter
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 }

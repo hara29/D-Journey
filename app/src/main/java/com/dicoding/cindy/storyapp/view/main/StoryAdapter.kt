@@ -1,4 +1,4 @@
-package com.dicoding.cindy.storyapp.view.main.liststory
+package com.dicoding.cindy.storyapp.view.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,9 @@ import com.bumptech.glide.Glide
 import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ItemStoriesBinding
 
-class StoryAdapter(private val onItemClickCallback: OnItemClickCallback) : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter(private val onItemClickCallback: OnItemClickCallback) : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)

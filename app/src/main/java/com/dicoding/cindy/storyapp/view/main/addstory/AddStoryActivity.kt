@@ -1,5 +1,6 @@
 package com.dicoding.cindy.storyapp.view.main.addstory
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import com.dicoding.cindy.storyapp.getImageUri
 import com.dicoding.cindy.storyapp.reduceFileImage
 import com.dicoding.cindy.storyapp.uriToFile
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
+import com.dicoding.cindy.storyapp.view.main.MainActivity
 
 
 class AddStoryActivity : AppCompatActivity() {
@@ -35,11 +37,14 @@ class AddStoryActivity : AppCompatActivity() {
 
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
+
     }
 
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
-            binding.btnAdd.setOnClickListener { uploadStory(user.token) }
+            binding.buttonAdd.setOnClickListener {
+                uploadStory(user.token)
+            }
         }
     }
     private fun startGallery() {
@@ -80,7 +85,7 @@ class AddStoryActivity : AppCompatActivity() {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
-            val description = binding.edInputMessage.text.toString()
+            val description = binding.edAddDescription.text.toString()
             viewModel.postStory(token, imageFile, description).observe(this) { result ->
                 if (result != null) {
                     when (result) {
@@ -91,6 +96,9 @@ class AddStoryActivity : AppCompatActivity() {
                         is Result.Success -> {
                             showToast(result.data.message)
                             showLoading(false)
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
                         }
 
                         is Result.Error -> {

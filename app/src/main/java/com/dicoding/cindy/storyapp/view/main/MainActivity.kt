@@ -51,6 +51,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        getSession()
+    }
+
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {

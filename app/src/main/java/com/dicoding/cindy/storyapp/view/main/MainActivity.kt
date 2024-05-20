@@ -10,15 +10,13 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.data.Result
-import com.dicoding.cindy.storyapp.data.response.login.LoginResult
 import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
+import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryActivity
 import com.dicoding.cindy.storyapp.view.main.detailstory.DetailStoryActivity
 import com.dicoding.cindy.storyapp.view.welcome.WelcomeActivity
 
@@ -46,24 +44,26 @@ class MainActivity : AppCompatActivity() {
         setupView()
         setupAction()
         getSession()
+
+        binding.fabAdd.setOnClickListener{
+            val intent = Intent(this, AddStoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getSession() {
         viewModel.getSession().observe(this) { user ->
-            Log.d("MainAct", "Nama: ${user.name}")
-            Log.d("MainAct", "Token: ${user.token}")
-            Log.d("MainAct", "isLogin: ${user.isLogin}")
-            if (user.isLogin && user.token != null) {
-                getStories()
-            } else {
+            if (!user.isLogin) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
+            } else {
+                getStories(user.token)
             }
         }
     }
 
-    private fun getStories() {
-        viewModel.getStories().observe(this) { result ->
+    private fun getStories(token: String) {
+        viewModel.getStories(token).observe(this) { result ->
             when (result) {
                 is Result.Loading -> showLoading(true)
                 is Result.Success -> {

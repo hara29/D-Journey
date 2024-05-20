@@ -1,6 +1,5 @@
 package com.dicoding.cindy.storyapp.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dicoding.cindy.storyapp.data.response.ErrorResponse
@@ -8,10 +7,17 @@ import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
 import com.dicoding.cindy.storyapp.data.response.login.LoginResult
 import com.dicoding.cindy.storyapp.data.retrofit.ApiService
 import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.response.story.AddNewStoryResponse
 import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
+import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
+import java.io.File
 
 class StoryRepository (
     private val apiService: ApiService,
@@ -34,13 +40,8 @@ class StoryRepository (
         try {
             val response = apiService.userSignup(name, email, password)
             emit(Result.Success(response))
-            Log.d("Signup",  "Berhasil signup")
         } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            emit(Result.Error(errorMessage ?: "An error occurred"))
-            Log.d("Signup", e.message?: "Tidak bisa signup")
+            emit(handleHttpException(e))
         }
     }
 
@@ -49,29 +50,44 @@ class StoryRepository (
         try {
             val response = apiService.userLogin(email, password)
             emit(Result.Success(response))
-            Log.d("Login",  "Berhasil login")
         } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            emit(Result.Error(errorMessage ?: "An error occurred"))
-            Log.d("login", e.message?: "Tidak bisa login")
+            emit(handleHttpException(e))
         }
     }
 
-    fun getStories(): LiveData<Result<GetAllStoriesResponse>> = liveData {
+    fun getStories(token: String): LiveData<Result<GetAllStoriesResponse>> = liveData {
         emit(Result.Loading)
         try {
-            val response = apiService.getStories()
+            val response = ApiConfig.getApiService(token).getStories()
             emit(Result.Success(response))
-            Log.d("ListSories",  "List Berhasil ditampilkan")
         } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-            val errorMessage = errorBody.message
-            emit(Result.Error(errorMessage ?: "An error occurred"))
-            Log.d("ListSories", e.message?: "List Gagal ditampilkan")
+            emit(handleHttpException(e))
         }
+    }
+
+    fun uploadStory(token: String, imageFile: File, description: String): LiveData<Result<AddNewStoryResponse>> = liveData {
+        emit(Result.Loading)
+        val requestBody = description.toRequestBody("text/plain".toMediaType())
+        val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+        val multipartBody = MultipartBody.Part.createFormData(
+            "photo",
+            imageFile.name,
+            requestImageFile
+        )
+        try {
+            val response = ApiConfig.getApiService(token).uploadStory(multipartBody, requestBody)
+            emit(Result.Success(response))
+        } catch (e: HttpException) {
+            emit(handleHttpException(e))
+        }
+
+    }
+    private fun handleHttpException(e: HttpException): Result.Error {
+        val jsonInString = e.response()?.errorBody()?.string()
+        val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
+        val errorMessage = errorBody.message
+        val errorText= "An error occurred"
+        return Result.Error(errorMessage ?: errorText)
     }
 
     companion object {

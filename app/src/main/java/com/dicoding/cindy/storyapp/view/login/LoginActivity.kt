@@ -3,7 +3,6 @@ package com.dicoding.cindy.storyapp.view.login
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -60,21 +59,10 @@ class LoginActivity : AppCompatActivity() {
                             showLoading(false)
                             loginProcess(it.data)
                             moveActivity()
-//                               if (it.data.error) {
-//                                   showToast(getString(R.string.login_failed_message))
-//                               } else {
-//                            viewModel.saveSession(it.data.loginResult)
-//                            showToast(getString(R.string.login_success_message))
-//                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                            startActivity(intent)
-//                               }
                         }
                         is Result.Error -> {
                             showLoading(false)
                             showToast(it.error)
-                               // Toast.makeText(this@LoginActivity, it.error, Toast.LENGTH_LONG).show()
-                            Log.d("signup act", it.error)
                         }
                     }
                 }
@@ -90,7 +78,6 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
-        // finish()
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

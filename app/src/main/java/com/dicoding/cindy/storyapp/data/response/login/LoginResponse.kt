@@ -1,8 +1,6 @@
 package com.dicoding.cindy.storyapp.data.response.login
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
 data class LoginResponse(
 

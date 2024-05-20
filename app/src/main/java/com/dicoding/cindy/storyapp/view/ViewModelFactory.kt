@@ -7,6 +7,7 @@ import com.dicoding.cindy.storyapp.data.StoryRepository
 import com.dicoding.cindy.storyapp.di.Injection
 import com.dicoding.cindy.storyapp.view.login.LoginViewModel
 import com.dicoding.cindy.storyapp.view.main.ListStoryViewModel
+import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryViewModel
 import com.dicoding.cindy.storyapp.view.signup.SignupViewModel
 
 class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -22,6 +23,9 @@ class ViewModelFactory(private val repository: StoryRepository) : ViewModelProvi
             }
             modelClass.isAssignableFrom(SignupViewModel::class.java) -> {
                 SignupViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

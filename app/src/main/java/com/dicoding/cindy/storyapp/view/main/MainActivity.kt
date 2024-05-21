@@ -17,7 +17,6 @@ import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryActivity
-import com.dicoding.cindy.storyapp.view.main.detailstory.DetailStoryActivity
 import com.dicoding.cindy.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -25,13 +24,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
-    private val adapter = StoryAdapter(object : StoryAdapter.OnItemClickCallback {
-        override fun onItemClicked(story: ListStoryItem) {
-            val moveDataIntent = Intent(this@MainActivity, DetailStoryActivity::class.java)
-            moveDataIntent.putExtra(DetailStoryActivity.EXTRA_STORY, story)
-            startActivity(moveDataIntent)
-        }
-    })
+    private val adapter = StoryAdapter()
 
     private lateinit var binding: ActivityMainBinding
 

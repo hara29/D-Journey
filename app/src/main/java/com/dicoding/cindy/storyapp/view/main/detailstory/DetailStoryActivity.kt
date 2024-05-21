@@ -2,8 +2,10 @@ package com.dicoding.cindy.storyapp.view.main.detailstory
 
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityDetailStoryBinding
 
@@ -13,6 +15,9 @@ class DetailStoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.detail_story)
 
         getData()
     }
@@ -32,6 +37,16 @@ class DetailStoryActivity : AppCompatActivity() {
             binding.tvDetailDescription.text = story.description
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
     companion object{
         const val EXTRA_STORY = "extra_story"

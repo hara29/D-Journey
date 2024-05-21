@@ -33,6 +33,9 @@ class AddStoryActivity : AppCompatActivity() {
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = getString(R.string.add_story)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         getSession()
 
         binding.galleryButton.setOnClickListener { startGallery() }
@@ -116,4 +119,5 @@ class AddStoryActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
 }

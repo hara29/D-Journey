@@ -22,7 +22,8 @@
             android:exported="false" />
         <activity
             android:name=".view.main.addstory.AddStoryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".view.main.MainActivity"/>
         <activity
             android:name=".view.main.detailstory.DetailStoryActivity"
             android:exported="false" />

@@ -9,6 +9,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.cindy.storyapp.R
@@ -96,8 +97,19 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
             adapter = adapter
         }
-        binding.logoutButton.setOnClickListener {
-            viewModel.logout()
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_logout -> {
+                    showLogoutConfirmationDialog()
+                    true
+                }
+                R.id.menu_setting -> {
+//                    val intent = Intent(this@MainActivity, SettingActivity::class.java)
+//                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -108,6 +120,19 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(stories)
             binding.recyclerView.adapter = adapter
         }
+    }
+    private fun showLogoutConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.logout))
+        builder.setMessage(getString(R.string.logout_alert_message))
+        builder.setPositiveButton(getString(R.string.yes)) { _, _ ->
+            viewModel.logout()
+        }
+        builder.setNegativeButton(getString(R.string.no)) { _, _ ->
+            // User clicked No button, do nothing
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun showLoading(isLoading: Boolean) {

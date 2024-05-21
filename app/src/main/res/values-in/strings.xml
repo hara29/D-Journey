@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">d\'Journey</string>
+    <string name="message_main_page">Selamat datang!</string>
+    <string name="title_welcome_page">Selamat datang di d\'Journey!</string>
+    <string name="message_welcome_page">Mari temukan cerita inspiratif dari belajar dan mengembangkan skill bersama komunitas Dicoding di d\'Journey</string>
+    <string name="login">Masuk</string>
+    <string name="signup">Daftar</string>
+    <string name="title_login_page">Masuk dan Jelajahi Kisah Inspiratif!</string>
+    <string name="message_login_page">Temukan cerita-cerita inspiratif dari komunitas Dicoding. Silakan masuk untuk melihat lebih banyak!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="name">Nama</string>
+    <string name="logout">Logout</string>
+    <string name="signup_failed_message">Gagal Sign Up</string>
+    <string name="signup_success_message">Sign Up berhasil, silahkan login!</string>
+    <string name="login_failed_message">Gagal Login</string>
+    <string name="login_success_message">Login Berhasil</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_stories">Story Tidak Ditemukan</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Deskripsi</string>
+    <string name="upload">Upload</string>
+    <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
+    <string name="no_media_selected">Tidak ada media yang dipilih</string>
+    <string name="setting">Pengaturan</string>
+    <string name="logout_alert_message">Apakah Anda yakin ingin keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="detail_story">Detail Cerita</string>
+    <string name="add_story">Tambah Cerita</string>
+</resources>

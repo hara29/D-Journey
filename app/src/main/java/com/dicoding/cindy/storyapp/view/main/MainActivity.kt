@@ -103,11 +103,6 @@ class MainActivity : AppCompatActivity() {
                     showLogoutConfirmationDialog()
                     true
                 }
-                R.id.menu_setting -> {
-//                    val intent = Intent(this@MainActivity, SettingActivity::class.java)
-//                    startActivity(intent)
-                    true
-                }
                 else -> false
             }
         }

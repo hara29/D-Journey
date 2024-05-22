@@ -1,40 +1,24 @@
 package com.dicoding.cindy.storyapp.view.customview
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.util.Patterns
 import androidx.appcompat.widget.AppCompatEditText
+import com.dicoding.cindy.storyapp.R
+import com.google.android.material.textfield.TextInputLayout
 
 class MyEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
     private var isError: Boolean = false
-    private val errorBorderColor: Int = Color.RED
-    private val defaultBorderColor: Int = Color.BLACK
-
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        background = if (isError) {
-            getDrawableWithBorder(errorBorderColor, 4)
-        } else {
-            getDrawableWithBorder(defaultBorderColor, 2)
-        }
-    }
+    private var originalBorderColor: Int = 0
 
     init {
-        // clearButtonImage = ContextCompat.getDrawable(context, R.drawable.ic_close_24) as Drawable
-        // setOnTouchListener(this)
-
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // if (s.toString().isNotEmpty()) showClearButton() else hideClearButton()
                 val text = s.toString()
 
                 when (inputType) {
@@ -51,6 +35,14 @@ class MyEditText @JvmOverloads constructor(
         })
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        val parentLayout = parent.parent as? TextInputLayout
+        parentLayout?.let {
+            originalBorderColor = it.boxStrokeColor
+        }
+    }
+
 
     private fun emailCheck(text: String){
         if (!Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
@@ -59,7 +51,7 @@ class MyEditText @JvmOverloads constructor(
         } else {
             isError = false
         }
-        invalidate()
+        updateBorderColor()
     }
 
     private fun passwordCheck(text: String){
@@ -69,15 +61,15 @@ class MyEditText @JvmOverloads constructor(
         } else {
             false
         }
-        invalidate()
+        updateBorderColor()
     }
 
-    private fun getDrawableWithBorder(borderColor: Int, width: Int): Drawable {
-        val shape = GradientDrawable()
-        shape.shape = GradientDrawable.RECTANGLE
-        shape.setStroke(width, borderColor)
-        shape.setColor(Color.TRANSPARENT)
-        return shape
+    private fun updateBorderColor() {
+        val parentLayout = parent.parent as? TextInputLayout
+        parentLayout?.let {
+            if (isError) it.boxStrokeColor = context.getColor(R.color.md_theme_error)
+            else  it.boxStrokeColor = originalBorderColor
+        }
     }
 
     companion object {

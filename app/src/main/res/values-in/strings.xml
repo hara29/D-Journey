@@ -31,4 +31,9 @@
     <string name="no">Tidak</string>
     <string name="detail_story">Detail Cerita</string>
     <string name="add_story">Tambah Cerita</string>
+    <string name="back_button">Tombol Kembali</string>
+    <string name="image">Gambar</string>
+    <string name="login_image">Login Image</string>
+    <string name="welcome_image">Welcome Image</string>
+    <string name="image_preview">Image Preview</string>
 </resources>

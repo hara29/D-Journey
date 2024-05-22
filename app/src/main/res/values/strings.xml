@@ -30,4 +30,9 @@
     <string name="no">No</string>
     <string name="detail_story">Detail Story</string>
     <string name="add_story">Add Story</string>
+    <string name="back_button">Back Button</string>
+    <string name="image">Image</string>
+    <string name="login_image">Login Image</string>
+    <string name="welcome_image">Welcome Image</string>
+    <string name="image_preview">Image Preview</string>
 </resources>

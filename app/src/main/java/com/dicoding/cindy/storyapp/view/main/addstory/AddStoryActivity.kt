@@ -2,9 +2,11 @@ package com.dicoding.cindy.storyapp.view.main.addstory
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowInsets
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,11 +38,18 @@ class AddStoryActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.add_story)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setupView()
         getSession()
 
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
 
+    }
+
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
     }
 
     private fun getSession() {
@@ -114,7 +123,7 @@ class AddStoryActivity : AppCompatActivity() {
         } ?: showToast(getString(R.string.empty_image_warning))
     }
     private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

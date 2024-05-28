@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">d\'Journey</string>
-    <string name="message_main_page">Welcome!</string>
     <string name="title_welcome_page">Welcome to d\'Journey!</string>
     <string name="message_welcome_page">Discover inspirational stories from learning and developing skills with the Dicoding community at d\'Journey.</string>
     <string name="login">Login</string>
@@ -14,9 +14,7 @@
     <string name="logout">Logout</string>
     <string name="signup_failed_message">Sign Up Failed</string>
     <string name="signup_success_message">Sign Up successful, please log in!</string>
-    <string name="login_failed_message">Login Failed</string>
     <string name="login_success_message">Login Successful</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_stories">No Stories Found</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
@@ -24,15 +22,20 @@
     <string name="upload">Upload</string>
     <string name="empty_image_warning">Please upload an image file first.</string>
     <string name="no_media_selected">No media selected</string>
-    <string name="setting">Setting</string>
     <string name="logout_alert_message">Are you sure you want to logout?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="detail_story">Detail Story</string>
     <string name="add_story">Add Story</string>
-    <string name="back_button">Back Button</string>
     <string name="image">Image</string>
     <string name="login_image">Login Image</string>
     <string name="welcome_image">Welcome Image</string>
     <string name="image_preview">Image Preview</string>
+    <string name="warning_minimum_character">this field can\'t be less than 8 character</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map">Map</string>
+    <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satellite</string>
+    <string name="terrain_type">Terrain</string>
+    <string name="hybrid_type">Hybrid</string>
 </resources>

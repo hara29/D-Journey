@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">d\'Journey</string>
-    <string name="message_main_page">Selamat datang!</string>
     <string name="title_welcome_page">Selamat datang di d\'Journey!</string>
     <string name="message_welcome_page">Mari temukan cerita inspiratif dari belajar dan mengembangkan skill bersama komunitas Dicoding di d\'Journey</string>
     <string name="login">Masuk</string>
@@ -15,9 +14,7 @@
     <string name="logout">Logout</string>
     <string name="signup_failed_message">Gagal Sign Up</string>
     <string name="signup_success_message">Sign Up berhasil, silahkan login!</string>
-    <string name="login_failed_message">Gagal Login</string>
     <string name="login_success_message">Login Berhasil</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_stories">Story Tidak Ditemukan</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
@@ -25,15 +22,15 @@
     <string name="upload">Upload</string>
     <string name="empty_image_warning">Silakan masukkan berkas gambar terlebih dahulu.</string>
     <string name="no_media_selected">Tidak ada media yang dipilih</string>
-    <string name="setting">Pengaturan</string>
     <string name="logout_alert_message">Apakah Anda yakin ingin keluar?</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="detail_story">Detail Cerita</string>
     <string name="add_story">Tambah Cerita</string>
-    <string name="back_button">Tombol Kembali</string>
     <string name="image">Gambar</string>
-    <string name="login_image">Login Image</string>
-    <string name="welcome_image">Welcome Image</string>
-    <string name="image_preview">Image Preview</string>
+    <string name="login_image">Gambar Halaman Login</string>
+    <string name="welcome_image">Gambar Halaman Selamat Datang</string>
+    <string name="image_preview">Partinjau gambar</string>
+    <string name="warning_minimum_character">this field can\'t be less than 8 character</string>
+    <string name="normal_type">Normal</string>
 </resources>

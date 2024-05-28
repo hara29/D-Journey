@@ -3,6 +3,8 @@ package com.dicoding.cindy.storyapp.view.main.detailstory
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.WindowInsets
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.dicoding.cindy.storyapp.R
@@ -19,30 +21,40 @@ class DetailStoryActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.detail_story)
 
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
+        setupView()
         getData()
     }
 
-    private fun getData(){
-        val story = if (Build.VERSION.SDK_INT >= 33) {
-            intent.getParcelableExtra<ListStoryItem>(EXTRA_STORY, ListStoryItem::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra<ListStoryItem>(EXTRA_STORY)
+    private fun setupView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
         }
-        if (story != null) {
-            Glide.with(applicationContext)
-                .load(story.photoUrl)
-                .into(binding.ivDetailPhoto)
-            binding.tvDetailName.text = story.name
-            binding.tvDetailDescription.text = story.description
-        }
+    }
 
+    private fun getData(){
+        val story: ListStoryItem? = intent.getParcelableExtra(EXTRA_STORY)
+        story?.let {
+            binding.apply {
+                Glide.with(applicationContext)
+                    .load(it.photoUrl)
+                    .into(ivDetailPhoto)
+                tvDetailName.text = it.name
+                tvDetailDescription.text = it.description
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

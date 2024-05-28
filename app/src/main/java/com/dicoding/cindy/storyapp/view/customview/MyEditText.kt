@@ -56,7 +56,7 @@ class MyEditText @JvmOverloads constructor(
 
     private fun passwordCheck(text: String){
         isError = if (text.length < 8) {
-            setError("this field can't be less than 8 character", null)
+            setError(context.getString(R.string.warning_minimum_character), null)
             true
         } else {
             false

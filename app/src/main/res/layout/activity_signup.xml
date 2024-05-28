@@ -31,16 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-<!--    <com.dicoding.cindy.storyapp.view.customview.MyEditText-->
-<!--        android:id="@+id/ed_register_name"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:ems="10"-->
-<!--        android:inputType="text"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/nameTextView"-->
-<!--        app:startIconDrawable="@drawable/ic_baseline_person_24"/>-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameEditTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

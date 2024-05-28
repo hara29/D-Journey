@@ -65,6 +65,16 @@ class StoryRepository (
         }
     }
 
+    fun getStoriesWithLocation(token: String): LiveData<Result<GetAllStoriesResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = ApiConfig.getApiService(token).getStoriesWithLocation()
+            emit(Result.Success(response))
+        } catch (e: HttpException) {
+            emit(handleHttpException(e))
+        }
+    }
+
     fun uploadStory(token: String, imageFile: File, description: String): LiveData<Result<AddNewStoryResponse>> = liveData {
         emit(Result.Loading)
         val requestBody = description.toRequestBody("text/plain".toMediaType())

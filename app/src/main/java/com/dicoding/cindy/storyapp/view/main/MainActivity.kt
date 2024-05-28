@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +17,7 @@ import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryActivity
+import com.dicoding.cindy.storyapp.view.main.maps.MapsActivity
 import com.dicoding.cindy.storyapp.view.welcome.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +28,12 @@ class MainActivity : AppCompatActivity() {
     private val adapter = StoryAdapter()
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         setupView()
         setupAction()
@@ -56,7 +56,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             } else {
-                getStories(user.token)
+                token = user.token
+                getStories(token)
             }
         }
     }
@@ -78,14 +79,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun setupView() {
-        @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
         }
         supportActionBar?.hide()
     }
@@ -93,7 +88,6 @@ class MainActivity : AppCompatActivity() {
     private fun setupAction() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
-            // addItemDecoration(DividerItemDecoration(this@MainActivity, (layoutManager as LinearLayoutManager).orientation))
             setHasFixedSize(true)
             adapter = adapter
         }
@@ -101,6 +95,14 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_logout -> {
                     showLogoutConfirmationDialog()
+                    true
+                }
+                R.id.menu_maps -> {
+                    val intent = Intent(this, MapsActivity::class.java)
+                    // Tambahkan token sebagai data ekstra
+                    intent.putExtra(MapsActivity.EXTRA_TOKEN, token)
+                    startActivity(intent)
+                    finish()
                     true
                 }
                 else -> false
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.logout()
         }
         builder.setNegativeButton(getString(R.string.no)) { _, _ ->
-            // User clicked No button, do nothing
         }
         val dialog = builder.create()
         dialog.show()

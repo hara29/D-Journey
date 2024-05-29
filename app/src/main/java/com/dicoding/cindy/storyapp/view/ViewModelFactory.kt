@@ -8,7 +8,6 @@ import com.dicoding.cindy.storyapp.di.Injection
 import com.dicoding.cindy.storyapp.view.login.LoginViewModel
 import com.dicoding.cindy.storyapp.view.main.ListStoryViewModel
 import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryViewModel
-import com.dicoding.cindy.storyapp.view.main.maps.MapsActivity
 import com.dicoding.cindy.storyapp.view.main.maps.MapsViewModel
 import com.dicoding.cindy.storyapp.view.signup.SignupViewModel
 

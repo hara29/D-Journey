@@ -38,6 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         token = intent.getStringExtra(EXTRA_TOKEN).toString()
 
         val mapFragment = supportFragmentManager

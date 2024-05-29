@@ -2,6 +2,10 @@ package com.dicoding.cindy.storyapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.dicoding.cindy.storyapp.data.response.ErrorResponse
 import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
 import com.dicoding.cindy.storyapp.data.response.login.LoginResult
@@ -9,6 +13,7 @@ import com.dicoding.cindy.storyapp.data.retrofit.ApiService
 import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
 import com.dicoding.cindy.storyapp.data.response.story.AddNewStoryResponse
 import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
+import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
@@ -55,16 +60,16 @@ class StoryRepository (
         }
     }
 
-    fun getStories(token: String): LiveData<Result<GetAllStoriesResponse>> = liveData {
-        emit(Result.Loading)
-        try {
-            val response = ApiConfig.getApiService(token).getStories()
-            emit(Result.Success(response))
-        } catch (e: HttpException) {
-            emit(handleHttpException(e))
-        }
+    fun getStories(token: String): LiveData<PagingData<ListStoryItem>>  {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(ApiConfig, token)
+            }
+        ).liveData
     }
-
     fun getStoriesWithLocation(token: String): LiveData<Result<GetAllStoriesResponse>> = liveData {
         emit(Result.Loading)
         try {

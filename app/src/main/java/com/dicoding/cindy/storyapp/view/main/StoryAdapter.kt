@@ -6,24 +6,25 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ItemStoriesBinding
 import com.dicoding.cindy.storyapp.view.main.detailstory.DetailStoryActivity
 
-class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(
-    DIFF_CALLBACK
-) {
+class StoryAdapter: PagingDataAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ItemStoriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val story = getItem(position)
-        holder.bind(story)
+        if (story != null) {
+            holder.bind(story)
+        }
     }
-    inner class MyViewHolder(private val binding: ItemStoriesBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemStoriesBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStoryItem){
             binding.tvItemName.text = story.name
             binding.tvItemDesc.text = story.description

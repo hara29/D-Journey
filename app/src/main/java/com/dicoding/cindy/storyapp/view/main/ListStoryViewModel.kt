@@ -4,13 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.dicoding.cindy.storyapp.data.Result
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.dicoding.cindy.storyapp.data.StoryRepository
 import com.dicoding.cindy.storyapp.data.response.login.LoginResult
-import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
+import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import kotlinx.coroutines.launch
 
 class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() {
+    fun getStories(token: String): LiveData<PagingData<ListStoryItem>> =
+        repository.getStories(token).cachedIn(viewModelScope)
     fun getSession(): LiveData<LoginResult> {
         return repository.getUser().asLiveData()
     }
@@ -20,9 +23,4 @@ class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() 
             repository.logout()
         }
     }
-
-    fun getStories(token: String): LiveData<Result<GetAllStoriesResponse>>{
-        return repository.getStories(token)
-    }
-
 }

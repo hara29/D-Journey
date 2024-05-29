@@ -3,7 +3,6 @@ package com.dicoding.cindy.storyapp.view.main
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.Toast
@@ -12,8 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.cindy.storyapp.R
-import com.dicoding.cindy.storyapp.data.Result
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityMainBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.view.main.addstory.AddStoryActivity
@@ -57,25 +54,15 @@ class MainActivity : AppCompatActivity() {
                 finish()
             } else {
                 token = user.token
-                getStories(token)
+                setStories(token)
             }
         }
     }
 
-    private fun getStories(token: String) {
-        viewModel.getStories(token).observe(this) { result ->
-            when (result) {
-                is Result.Loading -> showLoading(true)
-                is Result.Success -> {
-                    showLoading(false)
-                    setStories(result.data.listStory)
-                }
-                is Result.Error -> {
-                    showLoading(false)
-                    showToast(result.error)
-                    Log.d("List Story", result.error)
-                }
-            }
+    private fun setStories(token: String) {
+        binding.recyclerView.adapter = adapter
+        viewModel.getStories(token).observe(this) {
+            adapter.submitData(lifecycle, it)
         }
     }
     private fun setupView() {
@@ -99,10 +86,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.menu_maps -> {
                     val intent = Intent(this, MapsActivity::class.java)
-                    // Tambahkan token sebagai data ekstra
                     intent.putExtra(MapsActivity.EXTRA_TOKEN, token)
                     startActivity(intent)
-                    finish()
                     true
                 }
                 else -> false
@@ -110,14 +95,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setStories(stories: List<ListStoryItem>) {
-        if (stories.isEmpty()) {
-            showToast(getString(R.string.empty_stories))
-        } else {
-            adapter.submitList(stories)
-            binding.recyclerView.adapter = adapter
-        }
-    }
     private fun showLogoutConfirmationDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.logout))

@@ -1,4 +1,4 @@
-package com.dicoding.cindy.storyapp.data.response.story
+package com.dicoding.cindy.storyapp.data.remote.response.story
 
 import com.google.gson.annotations.SerializedName
 

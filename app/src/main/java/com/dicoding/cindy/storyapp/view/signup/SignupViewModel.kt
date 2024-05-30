@@ -3,7 +3,7 @@ package com.dicoding.cindy.storyapp.view.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.cindy.storyapp.data.StoryRepository
-import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.remote.response.signup.SignupResponse
 import com.dicoding.cindy.storyapp.data.Result
 
 class SignupViewModel(private val repository: StoryRepository) : ViewModel() {

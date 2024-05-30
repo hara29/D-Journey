@@ -1,4 +1,4 @@
-package com.dicoding.cindy.storyapp.data.retrofit
+package com.dicoding.cindy.storyapp.data.remote.retrofit
 
 import com.dicoding.cindy.storyapp.BuildConfig
 import okhttp3.Interceptor

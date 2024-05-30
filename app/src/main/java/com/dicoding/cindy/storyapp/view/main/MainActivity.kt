@@ -1,11 +1,10 @@
 package com.dicoding.cindy.storyapp.view.main
 
+import LoadingStateAdapter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowInsets
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -60,9 +59,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setStories(token: String) {
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
         viewModel.getStories(token).observe(this) {
-            adapter.submitData(lifecycle, it)
+            if(it != null){
+                adapter.submitData(lifecycle, it)
+            }
         }
     }
     private fun setupView() {
@@ -107,12 +112,4 @@ class MainActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
     }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
 }

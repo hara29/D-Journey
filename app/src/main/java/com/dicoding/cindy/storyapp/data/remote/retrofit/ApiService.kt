@@ -1,9 +1,9 @@
-package com.dicoding.cindy.storyapp.data.retrofit
+package com.dicoding.cindy.storyapp.data.remote.retrofit
 
-import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
-import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
-import com.dicoding.cindy.storyapp.data.response.story.AddNewStoryResponse
-import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResponse
+import com.dicoding.cindy.storyapp.data.remote.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.remote.response.story.AddNewStoryResponse
+import com.dicoding.cindy.storyapp.data.remote.response.story.GetAllStoriesResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Field

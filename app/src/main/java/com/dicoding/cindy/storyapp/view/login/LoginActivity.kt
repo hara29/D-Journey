@@ -10,7 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.data.Result
-import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResponse
 import com.dicoding.cindy.storyapp.databinding.ActivityLoginBinding
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
 import com.dicoding.cindy.storyapp.view.main.MainActivity

@@ -8,7 +8,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.dicoding.cindy.storyapp.R
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
+import com.dicoding.cindy.storyapp.data.remote.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ActivityDetailStoryBinding
 
 class DetailStoryActivity : AppCompatActivity() {

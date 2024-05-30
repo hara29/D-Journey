@@ -31,6 +31,7 @@
     <string name="login_image">Gambar Halaman Login</string>
     <string name="welcome_image">Gambar Halaman Selamat Datang</string>
     <string name="image_preview">Partinjau gambar</string>
-    <string name="warning_minimum_character">this field can\'t be less than 8 character</string>
+    <string name="warning_minimum_character">kolom ini tidak boleh kurang dari 8 karakter</string>
     <string name="normal_type">Normal</string>
+    <string name="retry">Coba lagi</string>
 </resources>

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.cindy.storyapp.data.Result
 import com.dicoding.cindy.storyapp.data.StoryRepository
-import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
-import com.dicoding.cindy.storyapp.data.response.login.LoginResult
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResponse
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResult
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val repository: StoryRepository) : ViewModel() {

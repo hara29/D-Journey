@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.dicoding.cindy.storyapp.data.StoryRepository
-import com.dicoding.cindy.storyapp.data.response.login.LoginResult
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResult
+import com.dicoding.cindy.storyapp.data.remote.response.story.ListStoryItem
 import kotlinx.coroutines.launch
 
 class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() {

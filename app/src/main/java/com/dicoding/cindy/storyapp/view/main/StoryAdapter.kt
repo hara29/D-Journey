@@ -9,7 +9,7 @@ import androidx.core.util.Pair
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
+import com.dicoding.cindy.storyapp.data.remote.response.story.ListStoryItem
 import com.dicoding.cindy.storyapp.databinding.ItemStoriesBinding
 import com.dicoding.cindy.storyapp.view.main.detailstory.DetailStoryActivity
 

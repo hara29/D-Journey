@@ -2,9 +2,8 @@ package com.dicoding.cindy.storyapp.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
-import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
-import com.dicoding.cindy.storyapp.data.retrofit.ApiService
+import com.dicoding.cindy.storyapp.data.remote.response.story.ListStoryItem
+import com.dicoding.cindy.storyapp.data.remote.retrofit.ApiConfig
 
 class StoryPagingSource(private val apiConfig: ApiConfig, private val token: String) : PagingSource<Int, ListStoryItem>() {
     private companion object {

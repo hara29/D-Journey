@@ -2,19 +2,21 @@ package com.dicoding.cindy.storyapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.dicoding.cindy.storyapp.data.response.ErrorResponse
-import com.dicoding.cindy.storyapp.data.response.login.LoginResponse
-import com.dicoding.cindy.storyapp.data.response.login.LoginResult
-import com.dicoding.cindy.storyapp.data.retrofit.ApiService
-import com.dicoding.cindy.storyapp.data.response.signup.SignupResponse
-import com.dicoding.cindy.storyapp.data.response.story.AddNewStoryResponse
-import com.dicoding.cindy.storyapp.data.response.story.GetAllStoriesResponse
-import com.dicoding.cindy.storyapp.data.response.story.ListStoryItem
-import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
+import com.dicoding.cindy.storyapp.data.local.room.StoryDatabase
+import com.dicoding.cindy.storyapp.data.remote.response.ErrorResponse
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResponse
+import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResult
+import com.dicoding.cindy.storyapp.data.remote.retrofit.ApiService
+import com.dicoding.cindy.storyapp.data.remote.response.signup.SignupResponse
+import com.dicoding.cindy.storyapp.data.remote.response.story.AddNewStoryResponse
+import com.dicoding.cindy.storyapp.data.remote.response.story.GetAllStoriesResponse
+import com.dicoding.cindy.storyapp.data.remote.response.story.ListStoryItem
+import com.dicoding.cindy.storyapp.data.remote.retrofit.ApiConfig
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType.Companion.toMediaType
@@ -25,6 +27,7 @@ import retrofit2.HttpException
 import java.io.File
 
 class StoryRepository (
+    private val database: StoryDatabase,
     private val apiService: ApiService,
     private val userPreference: UserPreference
 ){
@@ -60,13 +63,16 @@ class StoryRepository (
         }
     }
 
+    @OptIn(ExperimentalPagingApi::class)
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>>  {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(database, apiConfig = ApiConfig, token),
             pagingSourceFactory = {
-                StoryPagingSource(ApiConfig, token)
+                // StoryPagingSource(apiConfig = ApiConfig, token)
+                database.storyDao().getAllStory()
             }
         ).liveData
     }
@@ -109,11 +115,12 @@ class StoryRepository (
         @Volatile
         private var instance: StoryRepository? = null
         fun getInstance(
+            database: StoryDatabase,
             apiService: ApiService,
             userPreference: UserPreference
         ): StoryRepository =
             instance ?: synchronized(this) {
-                instance ?: StoryRepository(apiService, userPreference)
+                instance ?: StoryRepository(database, apiService, userPreference)
             }.also { instance = it }
 
     }

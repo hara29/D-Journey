@@ -4,7 +4,8 @@ import android.content.Context
 import com.dicoding.cindy.storyapp.data.StoryRepository
 import com.dicoding.cindy.storyapp.data.UserPreference
 import com.dicoding.cindy.storyapp.data.dataStore
-import com.dicoding.cindy.storyapp.data.retrofit.ApiConfig
+import com.dicoding.cindy.storyapp.data.local.room.StoryDatabase
+import com.dicoding.cindy.storyapp.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
 
@@ -13,6 +14,7 @@ object Injection {
          val pref = UserPreference.getInstance(context.dataStore)
          val user = runBlocking { pref.getUser().first() }
          val apiService = ApiConfig.getApiService(user.token)
-         return StoryRepository.getInstance(apiService, pref)
+        val database = StoryDatabase.getDatabase(context)
+         return StoryRepository.getInstance(database, apiService, pref)
     }
 }

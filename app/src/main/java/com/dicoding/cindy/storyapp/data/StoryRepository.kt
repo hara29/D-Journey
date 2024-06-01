@@ -87,9 +87,11 @@ class StoryRepository (
         }
     }
 
-    fun uploadStory(token: String, imageFile: File, description: String): LiveData<Result<AddNewStoryResponse>> = liveData {
+    fun uploadStory(token: String, imageFile: File, description: String, lat: String? = null, lon: String? = null): LiveData<Result<AddNewStoryResponse>> = liveData {
         emit(Result.Loading)
-        val requestBody = description.toRequestBody("text/plain".toMediaType())
+        val desc = description.toRequestBody("text/plain".toMediaType())
+        val locationLat = lat?.toRequestBody("text/plain".toMediaType())
+        val locationLon = lon?.toRequestBody("text/plain".toMediaType())
         val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "photo",
@@ -97,13 +99,14 @@ class StoryRepository (
             requestImageFile
         )
         try {
-            val response = ApiConfig.getApiService(token).uploadStory(multipartBody, requestBody)
+            val response = ApiConfig.getApiService(token).uploadStory(multipartBody, desc, locationLat, locationLon)
             emit(Result.Success(response))
         } catch (e: HttpException) {
             emit(handleHttpException(e))
         }
 
     }
+
     private fun handleHttpException(e: HttpException): Result.Error {
         val jsonInString = e.response()?.errorBody()?.string()
         val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)

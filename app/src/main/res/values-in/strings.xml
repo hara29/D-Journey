@@ -39,4 +39,6 @@
     <string name="hybrid_type">Hibrida</string>
     <string name="retry">Coba lagi</string>
     <string name="error">Galat</string>
+    <string name="share_my_location">Bagikan lokasi Saya?</string>
+    <string name="toast_activate_location">Tolong aktifkan setelan lokasi</string>
 </resources>

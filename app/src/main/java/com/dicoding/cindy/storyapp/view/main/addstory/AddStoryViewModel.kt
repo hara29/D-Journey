@@ -13,7 +13,7 @@ class AddStoryViewModel(private val repository: StoryRepository) : ViewModel() {
     fun getSession(): LiveData<LoginResult> {
         return repository.getUser().asLiveData()
     }
-    fun postStory(token: String, file: File, description: String): LiveData<Result<AddNewStoryResponse>> {
-        return repository.uploadStory(token, file,description)
+    fun postStory(token: String, file: File, description: String, lat: String?, lon: String?): LiveData<Result<AddNewStoryResponse>> {
+        return repository.uploadStory(token, file, description, lat, lon)
     }
 }

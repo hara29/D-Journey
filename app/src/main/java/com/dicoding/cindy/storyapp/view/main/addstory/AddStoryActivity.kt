@@ -1,6 +1,8 @@
 package com.dicoding.cindy.storyapp.view.main.addstory
 
-import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +14,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.dicoding.cindy.storyapp.R
 import com.dicoding.cindy.storyapp.data.Result
 import com.dicoding.cindy.storyapp.databinding.ActivityAddStoryBinding
@@ -19,12 +22,16 @@ import com.dicoding.cindy.storyapp.getImageUri
 import com.dicoding.cindy.storyapp.reduceFileImage
 import com.dicoding.cindy.storyapp.uriToFile
 import com.dicoding.cindy.storyapp.view.ViewModelFactory
-import com.dicoding.cindy.storyapp.view.main.MainActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
-
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var positionLat: String? = null
+    private var positionLon: String? = null
+    private lateinit var location: Location
     private var currentImageUri: Uri? = null
 
     private val viewModel by viewModels<AddStoryViewModel> {
@@ -40,9 +47,17 @@ class AddStoryActivity : AppCompatActivity() {
 
         setupView()
         getSession()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        getMyLocation()
 
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.cameraButton.setOnClickListener { startCamera() }
+        binding.addLocation.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                positionLat = location.latitude.toString()
+                positionLon = location.longitude.toString()
+            }
+        }
 
     }
 
@@ -98,7 +113,7 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.edAddDescription.text.toString()
-            viewModel.postStory(token, imageFile, description).observe(this) { result ->
+            viewModel.postStory(token, imageFile, description, positionLat, positionLon).observe(this) { result ->
                 if (result != null) {
                     when (result) {
                         is Result.Loading -> {
@@ -108,9 +123,7 @@ class AddStoryActivity : AppCompatActivity() {
                         is Result.Success -> {
                             showToast(result.data.message)
                             showLoading(false)
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
+                            finish()
                         }
 
                         is Result.Error -> {
@@ -121,6 +134,34 @@ class AddStoryActivity : AppCompatActivity() {
                 }
             }
         } ?: showToast(getString(R.string.empty_image_warning))
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+
+    private fun getMyLocation() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    this.location = location
+                } else {
+                    Toast.makeText(this,
+                        getString(R.string.toast_activate_location), Toast.LENGTH_LONG).show()
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

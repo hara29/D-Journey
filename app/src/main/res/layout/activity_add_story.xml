@@ -76,6 +76,15 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/add_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/share_my_location"
+            app:layout_constraintStart_toStartOf="@+id/layout_input_message"
+            app:layout_constraintTop_toBottomOf="@+id/layout_input_message" />
+
         <Button
             android:id="@+id/button_add"
             android:layout_width="wrap_content"
@@ -85,7 +94,7 @@
             android:text="@string/upload"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_input_message" />
+            app:layout_constraintTop_toBottomOf="@+id/add_location" />
 
         <ProgressBar
             android:id="@+id/progressBar"

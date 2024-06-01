@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class ListStoryViewModel(private val repository: StoryRepository) : ViewModel() {
     fun getStories(token: String): LiveData<PagingData<ListStoryItem>> =
         repository.getStories(token).cachedIn(viewModelScope)
+
     fun getSession(): LiveData<LoginResult> {
         return repository.getUser().asLiveData()
     }

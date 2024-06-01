@@ -1,6 +1,5 @@
 package com.dicoding.cindy.storyapp.view.main.maps
 
-import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -78,7 +77,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 when(it){
                     is Result.Error -> {
                         showLoading(false)
-                        showToast("Error")
+                        Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
                     }
                     Result.Loading -> showLoading(true)
                     is Result.Success -> {
@@ -193,9 +192,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showLoading(isLoading: Boolean) {
         binding.linearProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
     companion object{
         const val EXTRA_TOKEN = "extra_token"

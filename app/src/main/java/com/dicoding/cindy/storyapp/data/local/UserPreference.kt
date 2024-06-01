@@ -1,4 +1,4 @@
-package com.dicoding.cindy.storyapp.data
+package com.dicoding.cindy.storyapp.data.local
 
 import android.content.Context
 import android.util.Log

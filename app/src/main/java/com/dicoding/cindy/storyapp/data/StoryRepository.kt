@@ -7,6 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import com.dicoding.cindy.storyapp.data.local.UserPreference
 import com.dicoding.cindy.storyapp.data.local.room.StoryDatabase
 import com.dicoding.cindy.storyapp.data.remote.response.ErrorResponse
 import com.dicoding.cindy.storyapp.data.remote.response.login.LoginResponse

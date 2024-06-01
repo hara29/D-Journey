@@ -15,7 +15,6 @@
     <string name="signup_failed_message">Gagal Sign Up</string>
     <string name="signup_success_message">Sign Up berhasil, silahkan login!</string>
     <string name="login_success_message">Login Berhasil</string>
-    <string name="empty_stories">Story Tidak Ditemukan</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="description">Deskripsi</string>
@@ -32,6 +31,12 @@
     <string name="welcome_image">Gambar Halaman Selamat Datang</string>
     <string name="image_preview">Partinjau gambar</string>
     <string name="warning_minimum_character">kolom ini tidak boleh kurang dari 8 karakter</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="map">Peta</string>
     <string name="normal_type">Normal</string>
+    <string name="satellite_type">Satelit</string>
+    <string name="terrain_type">Medan</string>
+    <string name="hybrid_type">Hibrida</string>
     <string name="retry">Coba lagi</string>
+    <string name="error">Galat</string>
 </resources>

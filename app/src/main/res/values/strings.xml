@@ -15,7 +15,6 @@
     <string name="signup_failed_message">Sign Up Failed</string>
     <string name="signup_success_message">Sign Up successful, please log in!</string>
     <string name="login_success_message">Login Successful</string>
-    <string name="empty_stories">No Stories Found</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="description">Description</string>
@@ -39,4 +38,5 @@
     <string name="terrain_type">Terrain</string>
     <string name="hybrid_type">Hybrid</string>
     <string name="retry">Retry</string>
+    <string name="error">Error</string>
 </resources>

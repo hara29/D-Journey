@@ -47,6 +47,7 @@ class AddStoryActivity : AppCompatActivity() {
 
         setupView()
         getSession()
+        observeViewModel()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         getMyLocation()
 
@@ -113,27 +114,30 @@ class AddStoryActivity : AppCompatActivity() {
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
             val description = binding.edAddDescription.text.toString()
-            viewModel.postStory(token, imageFile, description, positionLat, positionLon).observe(this) { result ->
-                if (result != null) {
-                    when (result) {
-                        is Result.Loading -> {
-                            showLoading(true)
-                        }
+            viewModel.postStory(token, imageFile, description, positionLat, positionLon)
+        } ?: showToast(getString(R.string.empty_image_warning))
+    }
+    private fun observeViewModel() {
+        viewModel.postResult.observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
 
-                        is Result.Success -> {
-                            showToast(result.data.message)
-                            showLoading(false)
-                            finish()
-                        }
+                    is Result.Success -> {
+                        showToast(result.data.message)
+                        showLoading(false)
+                        finish()
+                    }
 
-                        is Result.Error -> {
-                            showToast(result.error)
-                            showLoading(false)
-                        }
+                    is Result.Error -> {
+                        showToast(result.error)
+                        showLoading(false)
                     }
                 }
             }
-        } ?: showToast(getString(R.string.empty_image_warning))
+        }
     }
 
     private val requestPermissionLauncher =

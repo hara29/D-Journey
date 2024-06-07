@@ -3,7 +3,6 @@ package com.dicoding.cindy.storyapp.view.signup
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.Toast
@@ -18,7 +17,6 @@ import com.dicoding.cindy.storyapp.view.login.LoginActivity
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
-
     private val viewModel by viewModels<SignupViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -29,6 +27,7 @@ class SignupActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        observeViewModel()
     }
 
     private fun setupView() {
@@ -44,35 +43,35 @@ class SignupActivity : AppCompatActivity() {
                 val email = edRegisterEmail.text.toString()
                 val name = edRegisterName.text.toString()
                 val password = edRegisterPassword.text.toString()
+                viewModel.signUpUser(name, email, password)
+            }
+        }
 
-                viewModel.signUpUser(name, email, password).observe(this@SignupActivity) {
-                    if (it != null) {
-                        when(it) {
-                            is Result.Loading -> {
-                                showLoading(true)
-                            }
-                            is Result.Success -> {
-                                showLoading(false)
-                                if (it.data.error) {
-                                    showToast(getString(R.string.signup_failed_message))
-                                } else {
-                                    showToast(getString(R.string.signup_success_message))
-                                    val intent = Intent(this@SignupActivity, LoginActivity::class.java)
-                                    startActivity(intent)
-                                }
-                            }
-                            is Result.Error -> {
-                                showLoading(false)
-                                Toast.makeText(this@SignupActivity, it.error, Toast.LENGTH_LONG).show()
-                                Log.d("signup act", it.error)
-                            }
-
+    }
+    private fun observeViewModel() {
+        viewModel.signupResult.observe(this) {
+            if (it != null) {
+                when(it) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+                    is Result.Success -> {
+                        showLoading(false)
+                        if (it.data.error) {
+                            showToast(getString(R.string.signup_failed_message))
+                        } else {
+                            showToast(getString(R.string.signup_success_message))
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
                         }
+                    }
+                    is Result.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this, it.error, Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
-
     }
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

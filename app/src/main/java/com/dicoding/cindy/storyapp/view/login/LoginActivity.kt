@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         setupView()
         setupAction()
+        observeViewModel()
     }
 
     private fun setupView() {
@@ -38,25 +39,32 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.loginButton.setOnClickListener {
-            val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
+        with(binding){
+            loginButton.setOnClickListener {
+                val email = edLoginEmail.text.toString()
+                val password = edLoginPassword.text.toString()
+                viewModel.loginUser(email, password)
+            }
+        }
+    }
 
-            viewModel.loginUser(email, password).observe(this@LoginActivity){
-                if (it != null){
-                    when(it){
-                        is Result.Loading -> {
-                            showLoading(true)
-                        }
-                        is Result.Success -> {
-                            showLoading(false)
-                            loginProcess(it.data)
-                            moveActivity()
-                        }
-                        is Result.Error -> {
-                            showLoading(false)
-                            showToast(it.error)
-                        }
+    private fun observeViewModel() {
+        viewModel.loginResult.observe(this) {
+            if (it != null) {
+                when (it) {
+                    is Result.Loading -> {
+                        showLoading(true)
+                    }
+
+                    is Result.Success -> {
+                        showLoading(false)
+                        loginProcess(it.data)
+                        moveActivity()
+                    }
+
+                    is Result.Error -> {
+                        showLoading(false)
+                        showToast(it.error)
                     }
                 }
             }
@@ -68,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
         showToast(getString(R.string.login_success_message))
     }
     private fun moveActivity(){
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
